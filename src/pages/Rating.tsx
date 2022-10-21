@@ -1,20 +1,22 @@
-import { Component, createEffect, createSignal, For } from "solid-js";
+import { Component, createResource, For } from "solid-js";
 import RatingItem from "../components/RatingItem";
 
-const [todos, setTodos] = createSignal([]);
+const fetchRating = async () =>
+  (await fetch('localhost:8080/api/rating')).json();
+
+export interface IRating {
+  points: number,
+  groupCode: string
+}
 
 const Rating: Component = () => {
 
-  createEffect(async () => {
-    const result = await fetch('https://jsonplaceholder.typicode.com/todos/')
-    const todos = await result.json()
-    setTodos(todos)
-  });
+  const [rating] = createResource<IRating[]>(fetchRating);
 
   return (
-    <div class="container">
+    <div class="pt-3 container col-md-6">
       <ul class="list-group">
-        <For each={todos()}>
+        <For each={rating()!.sort((a, b) => a.points - b.points)}>
           {(item) => <RatingItem item={item} />}
         </For>
       </ul>

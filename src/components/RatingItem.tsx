@@ -1,10 +1,11 @@
 import { Component } from "solid-js";
+import { IRating } from "../pages/Rating";
 
-const RatingItem: Component<{item: any}> = (props) => {
+const RatingItem: Component<{item: IRating}> = (props) => {
 
   return (
     <li class="list-group-item">
-      {props.item.id} {props.item.title}
+      {props.item.points} {props.item.groupCode}
     </li>
   );
 };
